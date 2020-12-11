@@ -1,0 +1,60 @@
+@startuml
+class CourseController {
+	-Vector<JSlider> sliders
+	-JPanel coursePanel
+	+CourseController(CourseData courses)
+	+void addCourse(CourseRecord record)
+	+void update(Observable o)
+	+void actionPerformed(ActionEvent arg0)
+	+void stateChanged(ChangeEvent arg0)
+	+{static}void main(String[] args)
+}
+class CourseData {
+}
+CourseController --> "1" CourseData : courseData
+class JPanel [[java:javax.swing.JPanel]] {
+}
+JPanel <|-- CourseController
+interface Observer {
+}
+Observer <|.. CourseController
+interface ChangeListener {
+}
+ChangeListener <|.. CourseController
+interface ActionListener {
+}
+ActionListener <|.. CourseController
+class BarChartObserver {
+	-Vector<CourseRecord> courseData
+	+BarChartObserver(CourseData data)
+	+void paint(Graphics g)
+	+void update(Observable o)
+}
+class JPanel {
+}
+JPanel <|-- BarChartObserver
+interface Observer {
+}
+Observer <|.. BarChartObserver
+class CourseData {
+	-Vector<CourseRecord> courseData
+	+CourseData()
+	+void addCourseRecord(CourseRecord courseRecord)
+	+void changeCourseRecord(String subjectName, int numOfStudents)
+	+Vector<CourseRecord> getUpdate()
+}
+class Observable {
+}
+Observable <|-- CourseData
+abstract class Observable {
+	#Vector<Observer> observers
+	+Observable()
+	+void attach(Observer o)
+	+void detach(Observer o)
+	+void notifyObservers()
+	+{abstract}Object getUpdate()
+}
+interface Observer {
+	void update(Observable o)
+}
+@enduml
