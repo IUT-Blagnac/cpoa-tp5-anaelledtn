@@ -131,6 +131,8 @@ public class CourseViewer extends JFrame implements ActionListener,
 
 	public void paint(Graphics g) {
 		super.paint(g);
+		int radius = 100;
+		Integer[] data = new Integer[this.sliders.size()];
 		LayoutConstants.paintBarChartOutline(g, sliders.size());
 		for (int i = 0; i < sliders.size(); i++) {
 			JSlider record = sliders.elementAt(i);
@@ -149,6 +151,21 @@ public class CourseViewer extends JFrame implements ActionListener,
 							* LayoutConstants.barSpacing + i
 							* LayoutConstants.barWidth, LayoutConstants.yOffset
 							+ LayoutConstants.graphHeight + 20);
+		}
+		double total = 0.0;
+		for (int i = 0; i < data.length; i++) {
+			data[i]= this.sliders.get(i).getValue();
+			total += data[i];
+		}
+		if (total != 0) {
+			double startAngle = 0.0;
+			for (int i = 0; i < data.length; i++) {
+				double ratio = (data[i] / total) * 360.0;
+				//draw the arc
+				g.setColor(LayoutConstants.courseColours[i%LayoutConstants.courseColours.length]);
+				g.fillArc(LayoutConstants.xOffset, LayoutConstants.yOffset + 300, 2 * radius, 2 * radius, (int) startAngle, (int) ratio);
+				startAngle += ratio;
+			}
 		}
 	}
 
